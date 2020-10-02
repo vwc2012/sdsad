@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Objects;
+
 /**
  *  Esta classe implementa um sistema de mensagens curtas estilo Twitter.
  *  É preciso cadastrar um usuário, identificado pelo seu e-mail, para que tuítes possam ser feitos.
@@ -6,10 +9,17 @@
  *  As mensagens podem conter hashtags (palavras iniciadas por #), que são detectadas automaticamente.
  *  Os tuítes podem conter, além da mensagem de texto, um anexo qualquer.
  *  Há um método para retornar, a qualquer momento, qual a hashtag mais usada em toda a história do sistema.
+ *
+ *
  */
 public class TuiterLite<T> {
+    public Usuario usuario;
+    public ArrayList<Usuario> UsuáriosCadastrados = new ArrayList();
+    public ArrayList<Hashtag> hashtags = new ArrayList();
+    public Tuite tuite;
 
     public static final int TAMANHO_MAXIMO_TUITES = 120;
+    private Hashtag HashtagMaisComum;
 
     /**
      * Cadastra um usuário, retornando o novo objeto Usuario criado.
@@ -19,8 +29,15 @@ public class TuiterLite<T> {
      * @return O Usuario criado.
      */
     public Usuario cadastrarUsuario(String nome, String email) {
-        // ToDo IMPLEMENT ME!!!
-        return null;
+        usuario = new Usuario(nome, email);
+        for(int i=0; i < UsuáriosCadastrados.size(); i++){
+            if (UsuáriosCadastrados.get(i).getEmail().equals(email)){
+                return null;
+            }
+        }
+        UsuáriosCadastrados.add(usuario);
+        return usuario;
+
     }
 
     /**
@@ -33,8 +50,17 @@ public class TuiterLite<T> {
      * @return Um "tuíte", que será devidamente publicado no sistema
      */
     public Tuite tuitarAlgo(Usuario usuario, String texto) {
-        // ToDo IMPLEMENT ME!!!
-        return null;
+        tuite = new Tuite(usuario, texto);
+            if(!UsuáriosCadastrados.contains(usuario)) {
+                return null;
+            }
+
+        if (texto.length() > TAMANHO_MAXIMO_TUITES){
+            return null;
+        }
+        usuario.addTuitesFeitos();
+        setandoHashtag(tuite);
+        return tuite;
     }
 
     /**
@@ -43,8 +69,25 @@ public class TuiterLite<T> {
      * @return A hashtag mais comum, ou null se nunca uma hashtag houver sido tuitada.
      */
     public String getHashtagMaisComum() {
-        // ToDo IMPLEMENT ME!!!
-        return null;
+        return this.HashtagMaisComum.getNome();
+    }
+
+    private void setandoHashtag(Tuite tuite){
+        int maior = 0;
+        for(Object s : tuite.getArrayHash()){
+            Hashtag h = (Hashtag) s;
+            if(!hashtags.contains(h))
+                hashtags.add(h);
+            else{
+                hashtags.get(hashtags.indexOf(h)).addQuantidade();
+            }
+        }
+        for(Hashtag h: hashtags){
+            if(h.getQuant() > maior){
+                maior = h.getQuant();
+                this.HashtagMaisComum = h;
+            }
+        }
     }
 
     // Mainzinho bobo, apenas ilustrando String.split(regexp), e o String.startsWith()
@@ -58,4 +101,9 @@ public class TuiterLite<T> {
 //            }
 //        }
 //    }
+
+
+
+
+
 }

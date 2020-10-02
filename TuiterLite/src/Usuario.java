@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.Objects;
 
 public class Usuario {
 
@@ -8,6 +9,7 @@ public class Usuario {
     private final String email;
     private String nome;
     private Image foto;
+    private int tuitesFeitos;
 
     // Pode ser INICIANTE, SENIOR ou NINJA
     private NivelUsuario nivel;
@@ -36,5 +38,23 @@ public class Usuario {
 
     public NivelUsuario getNivel() {
         return nivel;
+    }
+
+    public void addTuitesFeitos(){
+        tuitesFeitos+=1;
+        if(this.nivel != NivelUsuario.NINJA) {
+            if (this.tuitesFeitos >= Usuario.MIN_TUITES_SENIOR && this.tuitesFeitos < Usuario.MIN_TUITES_NINJA)
+                this.nivel = NivelUsuario.SENIOR;
+            else if (this.tuitesFeitos >= Usuario.MIN_TUITES_NINJA)
+                this.nivel = NivelUsuario.NINJA;
+        }
+    }
+
+   @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Usuario usuario = (Usuario) o;
+        return Objects.equals(email, usuario.email);
     }
 }
