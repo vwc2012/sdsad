@@ -23,7 +23,7 @@ public class Tuite<T> {
         this.anexo = anexo;
     }
 
-    public T getAnexo() {
+    public Object getAnexo() {
         return this.anexo;
     }
 

@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -14,7 +16,7 @@ import java.util.Objects;
  */
 public class TuiterLite<T> {
     public Usuario usuario;
-    public ArrayList<Usuario> UsuáriosCadastrados = new ArrayList();
+    public Map<Usuario, String> UsuáriosCadastrados = new HashMap<Usuario, String>();
     public ArrayList<Hashtag> hashtags = new ArrayList();
     public Tuite tuite;
 
@@ -31,11 +33,11 @@ public class TuiterLite<T> {
     public Usuario cadastrarUsuario(String nome, String email) {
         usuario = new Usuario(nome, email);
         for(int i=0; i < UsuáriosCadastrados.size(); i++){
-            if (UsuáriosCadastrados.get(i).getEmail().equals(email)){
+            if (UsuáriosCadastrados.containsKey(email)){
                 return null;
             }
         }
-        UsuáriosCadastrados.add(usuario);
+        UsuáriosCadastrados.put(usuario, email);
         return usuario;
 
     }
@@ -51,7 +53,7 @@ public class TuiterLite<T> {
      */
     public Tuite tuitarAlgo(Usuario usuario, String texto) {
         tuite = new Tuite(usuario, texto);
-            if(!UsuáriosCadastrados.contains(usuario)) {
+            if(!UsuáriosCadastrados.containsKey(usuario)) {
                 return null;
             }
 
